@@ -45,11 +45,13 @@ args = {'h': 0.2,
         'nbands': -60,
         'occupations': FermiDirac(0.1),
         'mixer': Mixer(0.1, 5, 50),
-        'poissonsolver': PoissonSolver(eps=1e-12),
+#        'poissonsolver': PoissonSolver(eps=1e-12),
+        'poissonsolver': PoissonSolver(),
         'eigensolver': 'rmm-diis',
         'maxiter': maxiter,
         'convergence': conv,
-        'txt': txt}
+        'txt': txt,
+        'mode': 'fd'}
 if use_cuda:
     args['gpu'] = gpu
     args['xc_thread'] = False
@@ -62,7 +64,8 @@ atoms = nanotube(n, m, length)
 atoms.center(vacuum=4.068, axis=0)
 atoms.center(vacuum=4.068, axis=1)
 calc = GPAW(**args)
-atoms.set_calculator(calc)
+atoms.calc=calc
+#atoms.set_calculator(calc)
 
 # execute the run
 try:
