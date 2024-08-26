@@ -4,8 +4,14 @@
 
 from __future__ import print_function
 from gpaw.mpi import size, rank
-from gpaw import GPAW, Mixer, PoissonSolver, ConvergenceError
+from gpaw.new.ase_interface import GPAW
+from gpaw import Mixer, PoissonSolver, ConvergenceError
 from gpaw.occupations import FermiDirac
+
+from gpaw.gpu import setup
+
+setup()
+
 try:
     from ase.build import nanotube
 except ImportError:
@@ -22,7 +28,7 @@ conv = {'eigenstates' : 1e-4, 'density' : 1e-2, 'energy' : 1e-3}
 # uncomment to use ScaLAPACK
 #parallel = {'sl_auto': True}
 # uncomment to use GPUs
-#gpu = {'cuda': True, 'hybrid_blas': False}
+gpu = {'cuda': True, 'hybrid_blas': False}
 
 # check which GPU backend (if any) is used
 if 'gpu' in locals():
@@ -53,8 +59,9 @@ args = {'h': 0.2,
         'txt': txt,
         'mode': 'fd'}
 if use_cuda:
-    args['gpu'] = gpu
-    args['xc_thread'] = False
+    parallel = {'gpu': True}
+    #args['gpu'] = gpu
+    #args['xc_thread'] = False
 try:
     args['parallel'] = parallel
 except: pass
