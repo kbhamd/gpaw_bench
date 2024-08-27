@@ -8,9 +8,12 @@ from gpaw import GPAW, Mixer, ConvergenceError
 from gpaw.occupations import FermiDirac
 from ase.io import read
 
-use_gpu=False
+from gpaw.gpu import setup
+
+use_gpu=True
 if use_gpu:
     parallel= {'gpu': True}
+    setup()
 else:
     parallel = {'sl_default': (4,4,64)}
 
@@ -22,7 +25,7 @@ kpts = (2,2,1)
 # other parameters
 input_coords = 'POSCAR'
 txt = 'output.txt'
-maxiter = 15
+maxiter = 25
 
 # output benchmark parameters
 if rank == 0:
